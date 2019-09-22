@@ -8,5 +8,9 @@
 	},
 	"scripts": {
 		"build": "webpack --config webpack.config.js"
+	},
+	"dependencies": {
+		"js-yaml": "^3.13.1",
+		"string-format": "^2.0.0"
 	}
 }
