@@ -4,6 +4,15 @@
 	"description": "A BetterDiscord plugin for generating custom context menu actions using YAML.",
 	"author": "haykam821",
 	"devDependencies": {
+		"babel-eslint": "^10.0.3",
+		"eslint": "^6.4.0",
+		"eslint-config-haykam": "^1.8.0",
+		"eslint-plugin-extra-rules": "0.0.0-development",
+		"eslint-plugin-html": "^6.0.0",
+		"eslint-plugin-json": "^1.4.0",
+		"eslint-plugin-markdown": "^1.0.0",
+		"eslint-plugin-react": "^7.14.3",
+		"eslint-plugin-unicorn": "^10.0.0",
 		"file-loader": "^4.2.0",
 		"html-minify-loader": "^1.4.0",
 		"jsx-loader": "^0.13.2",
@@ -11,11 +20,15 @@
 		"webpack-cli": "^3.3.9"
 	},
 	"scripts": {
-		"build": "webpack --config webpack.config.js"
+		"build": "webpack --config webpack.config.js",
+		"lint": "eslint \"./**/*.js\" \"./**/*.jsx\" --ignore-path .gitignore"
 	},
 	"dependencies": {
 		"js-yaml": "^3.13.1",
 		"semver": "^6.3.0",
 		"string-format": "^2.0.0"
+	},
+	"eslintConfig": {
+		"extends": "eslint-config-haykam"
 	}
 }

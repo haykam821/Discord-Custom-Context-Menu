@@ -1,0 +1,18 @@
+{
+	"extends": [
+		"eslint-config-haykam",
+		"plugin:react/recommended"
+	],
+	"parser": "babel-eslint",
+	"settings": {
+		"react": {
+			"version": "latest"
+		}
+	},
+	"env": {
+		"browser": true
+	},
+	"globals": {
+		"BdApi": true
+	}
+}
