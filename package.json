@@ -1,6 +1,6 @@
 {
 	"name": "discord-custom-context-menu",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"description": "A BetterDiscord plugin for generating custom context menu actions using YAML.",
 	"author": "haykam821",
 	"devDependencies": {

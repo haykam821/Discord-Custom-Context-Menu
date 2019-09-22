@@ -1,5 +1,7 @@
 const { version, author, description } = require("../package.json");
 
+const React = BdApi.React;
+
 const semver = require("semver");
 
 const yaml = require("js-yaml");
@@ -100,19 +102,15 @@ class CustomContextMenu {
 			instead: data => {
 				const rendered = data.callOriginalMethod();
 				Object.values(settings).forEach(itemDef => {
-					const menuItem = BdApi.React.createElement(MenuItem, {
-						label: itemDef.label,
-						action: () => {
-							if (itemDef.keep_open !== true) {
-								closeContextMenu();
-							}
-
-							if (itemDef.send_message) {
-								if (global.ZLibrary) global.ZLibrary.DiscordAPI.currentChannel.sendMessage(format(itemDef.send_message, data.thisObject.props), true);
-							}
+					const menuItem = <MenuItem label={itemDef.label || "Custom Item"} action={() => {
+						if (itemDef.keep_open !== true) {
+							closeContextMenu();
 						}
-					});
 
+						if (itemDef.send_message) {
+							if (global.ZLibrary) global.ZLibrary.DiscordAPI.currentChannel.sendMessage(format(itemDef.send_message, data.thisObject.props), true);
+						}
+					}} />;
 					rendered.props.children.push(menuItem);
 				});
 				return rendered;
