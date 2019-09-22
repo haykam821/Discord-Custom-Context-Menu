@@ -6,17 +6,17 @@ const semver = require("semver");
 
 const yaml = require("js-yaml");
 
-const stringFormat = require("string-format");
-const format = (string, props) => {
-	return stringFormat(string, {
-		...props,
-		/* eslint-disable camelcase */
-		author_mention: props.message.author.id ? `<@${props.message.author.id}>` : undefined,
-		channel_mention: props.channel.id ? `<#${props.channel.id}>` : undefined,
-		message_link: location.origin && props.channel.guild_id && props.channel.id && props.message.id ? `${location.origin}/channels/${props.channel.guild_id}/${props.channel.id}/${props.message.id}` : undefined,
-		/* eslint-enable camelcase */
-	});
-};
+const mapObj = require("map-obj");
+
+const format = require("string-format");
+const deepFormat = (obj, ...props) => mapObj(obj, (key, val) => {
+	if (typeof val === "string") {
+		return [key, format(val, ...props)];
+	}
+	return [key, val];
+}, {
+	deep: true,
+});
 
 const MessageContextMenu = BdApi.findModuleByDisplayName("MessageContextMenu");
 const MenuItem = BdApi.findModuleByDisplayName("MenuItem");
@@ -99,15 +99,53 @@ class CustomContextMenu {
 		// Patch to include new context menu items
 		this.unpatch = BdApi.monkeyPatch(MessageContextMenu.prototype, "render", {
 			instead: data => {
+				const props = data.thisObject.props;
+				const placeholders = {
+					...props,
+					/* eslint-disable camelcase */
+					author_mention: props.message.author.id ? `<@${props.message.author.id}>` : undefined,
+					author_tag: props.message.author.username && props.message.author.discriminator ? `${props.message.author.username}#${props.message.author.discriminator}` : undefined,
+					channel_mention: props.channel.id ? `<#${props.channel.id}>` : undefined,
+					message_link: location.origin && props.channel.guild_id && props.channel.id && props.message.id ? `${location.origin}/channels/${props.channel.guild_id}/${props.channel.id}/${props.message.id}` : undefined,
+					/* eslint-enable camelcase */
+				};
+
 				const rendered = data.callOriginalMethod();
-				Object.values(settings).forEach(itemDef => {
-					const menuItem = <MenuItem label={itemDef.label || "Custom Item"} action={() => {
-						if (itemDef.keep_open !== true) {
+				Object.values(settings).forEach(rawItemDef => {
+					const itemDef = deepFormat({
+						...rawItemDef,
+
+						/* eslint-disable camelcase */
+						actions: {
+							keep_open: false,
+							send_message: "",
+							...rawItemDef.actions,
+						},
+						checks: {
+							...rawItemDef.checks,
+						},
+						display: {
+							label: "Custom Item",
+							...rawItemDef.display,
+						},
+						/* eslint-enable camelcase */
+					}, placeholders);
+
+					const menuItem = <MenuItem label={itemDef.display.label} action={() => {
+						if (itemDef.actions.keep_open !== true) {
 							closeContextMenu();
 						}
 
-						if (itemDef.send_message) {
-							if (global.ZLibrary) global.ZLibrary.DiscordAPI.currentChannel.sendMessage(format(itemDef.send_message, data.thisObject.props), true);
+						if (itemDef.actions.debug === true) {
+							/* eslint-disable-next-line no-console */
+							console.log("Debug:", {
+								itemDef,
+								placeholders,
+							});
+						}
+
+						if (itemDef.actions.send_message) {
+							if (global.ZLibrary) global.ZLibrary.DiscordAPI.currentChannel.sendMessage(itemDef.actions.send_message, true);
 						}
 					}} />;
 					rendered.props.children.push(menuItem);

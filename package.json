@@ -25,6 +25,7 @@
 	},
 	"dependencies": {
 		"js-yaml": "^3.13.1",
+		"map-obj": "^4.1.0",
 		"semver": "^6.3.0",
 		"string-format": "^2.0.0"
 	},
