@@ -1,6 +1,12 @@
 const webpack = require("webpack");
 const path = require("path");
 
+const package = require("./package.json");
+const banner = JSON.stringify({
+	name: "CustomContextMenu",
+	website: package.homepage,
+});
+
 module.exports = {
 	entry: "./src/index.jsx",
 	mode: process.env.WEBPACK_MODE || "production",
@@ -16,7 +22,7 @@ module.exports = {
 	},
 	plugins: [
 		new webpack.BannerPlugin({
-			banner: "//META{\"name\":\"CustomContextMenu\"}*//",
+			banner: "//META" + banner + "*//",
 			raw: true,
 		}),
 	],
