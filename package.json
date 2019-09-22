@@ -30,5 +30,21 @@
 	},
 	"eslintConfig": {
 		"extends": "eslint-config-haykam"
-	}
+	},
+	"main": "./src/index.jsx",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/haykam821/Discord-Custom-Context-Menu.git"
+	},
+	"keywords": [
+		"discord",
+		"betterdiscord",
+		"custom",
+		"context-menu"
+	],
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/haykam821/Discord-Custom-Context-Menu/issues"
+	},
+	"homepage": "https://github.com/haykam821/Discord-Custom-Context-Menu#readme"
 }
