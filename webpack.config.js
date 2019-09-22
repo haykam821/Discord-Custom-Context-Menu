@@ -1,4 +1,5 @@
 const webpack = require("webpack");
+const path = require("path");
 
 module.exports = {
 	entry: "./src/index.jsx",
@@ -11,7 +12,7 @@ module.exports = {
 	},
 	output: {
 		filename: "CustomContextMenu.plugin.js",
-		path: __dirname + "/dist",
+		path: path.resolve(__dirname, "./dist"),
 	},
 	plugins: [
 		new webpack.BannerPlugin({

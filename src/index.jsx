@@ -10,17 +10,17 @@ const stringFormat = require("string-format");
 const format = (string, props) => {
 	return stringFormat(string, {
 		...props,
-		channel_mention: props.channel.id ? `<#${props.channel.id}>` : undefined,
+		/* eslint-disable camelcase */
 		author_mention: props.message.author.id ? `<@${props.message.author.id}>` : undefined,
+		channel_mention: props.channel.id ? `<#${props.channel.id}>` : undefined,
 		message_link: location.origin && props.channel.guild_id && props.channel.id && props.message.id ? `${location.origin}/channels/${props.channel.guild_id}/${props.channel.id}/${props.message.id}` : undefined,
+		/* eslint-enable camelcase */
 	});
 };
 
 const MessageContextMenu = BdApi.findModuleByDisplayName("MessageContextMenu");
 const MenuItem = BdApi.findModuleByDisplayName("MenuItem");
 const { closeContextMenu } = BdApi.findModuleByProps("closeContextMenu");
-
-const textArea = document.getElementsByClassName("da-textArea")[0];
 
 class CustomContextMenu {
 	constructor() {
@@ -73,7 +73,7 @@ class CustomContextMenu {
 				type: "warning",
 			});
 		}
-		
+
 		if (!global.ZeresPluginLibrary) {
 			BdApi.showToast("Install Zere's Plugin Library to take advantage of context menu actions such as sending messages.", {
 				type: "warning",
@@ -86,8 +86,7 @@ class CustomContextMenu {
 			settings = yaml.safeLoad(BdApi.loadData("CustomContextMenu", "menus"));
 		} catch (error) {
 			return BdApi.alert("Loading error", error.toString());
-			return BdApi.alert("Invalid syntax", error.toString());
-		}	
+		}
 
 		// Handle structure errors
 		if (typeof settings !== "object" || settings === null) {
