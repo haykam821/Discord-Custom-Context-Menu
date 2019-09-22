@@ -1,3 +1,7 @@
+const { version, author, description } = require("../package.json");
+
+const semver = require("semver");
+
 const yaml = require("js-yaml");
 
 const stringFormat = require("string-format");
@@ -25,13 +29,13 @@ class CustomContextMenu {
 		return "Custom Context Menu";
 	}
 	getDescription() {
-		return "A BetterDiscord plugin for generating custom context menu actions using YAML.";
+		return description;
 	}
 	getVersion() {
-		return "1.0.0";
+		return version;
 	}
 	getAuthor() {
-		return "haykam821";
+		return author;
 	}
 
 	getSettingsPanel() {
@@ -48,6 +52,7 @@ class CustomContextMenu {
 		textArea.value = BdApi.loadData("CustomContextMenu", "menus") || "";
 		textArea.addEventListener("input", () => {
 			BdApi.saveData("CustomContextMenu", "menus", textArea.value);
+			BdApi.saveData("CustomContextMenu", "syntaxVersion", version);
 		});
 
 		textArea.addEventListener("keydown", event => {
@@ -60,7 +65,18 @@ class CustomContextMenu {
 		return textArea;
 	}
 	start() {
-		if (!global.ZeresPluginLibrary) return BdApi.toast("Zere's Plugin Library Missing", "Install Zere's Plugin Library to take advantage of context menu actions such as sending messages.");
+		const syntaxVersion = BdApi.loadData("CustomContextMenu", "syntaxVersion");
+		if (syntaxVersion === undefined || semver.gt(syntaxVersion, version)) {
+			BdApi.showToast(`The custom menu settings you have were saved in a newer version (v${syntaxVersion}) than what you have installed (v${version}). Problems may occur.`, {
+				type: "warning",
+			});
+		}
+		
+		if (!global.ZeresPluginLibrary) {
+			BdApi.showToast("Install Zere's Plugin Library to take advantage of context menu actions such as sending messages.", {
+				type: "warning",
+			});
+		}
 
 		// Load YAML
 		let settings = {};

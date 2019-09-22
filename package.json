@@ -1,4 +1,8 @@
 {
+	"name": "discord-custom-context-menu",
+	"version": "0.0.1",
+	"description": "A BetterDiscord plugin for generating custom context menu actions using YAML.",
+	"author": "haykam821",
 	"devDependencies": {
 		"file-loader": "^4.2.0",
 		"html-minify-loader": "^1.4.0",
@@ -11,6 +15,7 @@
 	},
 	"dependencies": {
 		"js-yaml": "^3.13.1",
+		"semver": "^6.3.0",
 		"string-format": "^2.0.0"
 	}
 }
