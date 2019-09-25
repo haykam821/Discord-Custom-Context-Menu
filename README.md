@@ -13,15 +13,15 @@ Here is an example of a complete custom menu definition:
 
 ```yaml
 greet:
-	display:
-		label: "Greet User"
-	actions:
-		send_message: "Hello, {user_mention}!"
+    display:
+        label: "Greet User"
+    actions:
+        send_message: "Hello, {author_mention}!"
 throwback:
-	display:
-		label: "Throwback"
-	actions:
-		send_message: "Remember this message? {message_link}"
+    display:
+        label: "Throwback"
+    actions:
+        send_message: "Remember this message? {message_link}"
 ```
 
 Properties are shown using the following syntax:
