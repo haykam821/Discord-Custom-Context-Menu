@@ -26,8 +26,11 @@
 	"dependencies": {
 		"js-yaml": "^3.13.1",
 		"map-obj": "^4.1.0",
+		"react": "^16.9.0",
+		"react-dom": "^16.9.0",
 		"semver": "^6.3.0",
-		"string-format": "^2.0.0"
+		"string-format": "^2.0.0",
+		"styled-components": "^4.4.0"
 	},
 	"eslintConfig": {
 		"extends": "eslint-config-haykam"

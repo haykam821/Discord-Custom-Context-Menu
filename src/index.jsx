@@ -1,12 +1,15 @@
 const { version, author, description } = require("../package.json");
 
 const React = BdApi.React;
+const ReactDOM = require("react-dom");
 
 const semver = require("semver");
 
 const yaml = require("js-yaml");
 
 const mapObj = require("map-obj");
+
+const SettingsPanel = require("./components/settings-panel.jsx");
 
 const format = require("string-format");
 const deepFormat = (obj, ...props) => mapObj(obj, (key, val) => {
@@ -41,30 +44,9 @@ class CustomContextMenu {
 	}
 
 	getSettingsPanel() {
-		const textArea = document.createElement("textarea");
-
-		textArea.rows = 30;
-		textArea.placeholder = "Insert your custom context menus here!";
-
-		textArea.style.width = "100%";
-		textArea.style.height = "100%";
-		textArea.style.resize = "none";
-		textArea.style.fontFamily = "monospace";
-
-		textArea.value = BdApi.loadData("CustomContextMenu", "menus") || "";
-		textArea.addEventListener("input", () => {
-			BdApi.saveData("CustomContextMenu", "menus", textArea.value);
-			BdApi.saveData("CustomContextMenu", "syntaxVersion", version);
-		});
-
-		textArea.addEventListener("keydown", event => {
-			if (event.code !== "Tab") return;
-			event.preventDefault();
-
-			textArea.value = textArea.value.substr(0, textArea.selectionStart) + "    " + textArea.value.substr(textArea.selectionStart, textArea.value.length);
-		});
-
-		return textArea;
+		const container = document.createElement("container");
+		ReactDOM.render(<SettingsPanel/>, container);
+		return container;
 	}
 	start() {
 		const syntaxVersion = BdApi.loadData("CustomContextMenu", "syntaxVersion");
