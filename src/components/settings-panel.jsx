@@ -45,5 +45,20 @@ const SettingsPanel = styled(class SettingsPanel extends React.Component {
 	height: 100%;
 	resize: none;
 	font-family: monospace;
+
+	border: 1px solid;
+	border-radius: 5px;
+	padding: 8px;
+
+	.theme-light & {
+		border-color: #dcddde;
+		background: white;
+		color: #232529;
+	}
+	.theme-dark & {
+		border-color: #202225;
+		background: #242529;
+		color: #cfd1d3;
+	}
 `;
 module.exports = SettingsPanel;
